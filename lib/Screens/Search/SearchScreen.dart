@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ikman/Controllers/MainCategoryController.dart';
-import 'package:ikman/Providers/MainCategoryProvider.dart';
+import 'package:ikman/Controllers/CategoryController.dart';
+import 'package:ikman/Providers/CategoryProvider.dart';
 import 'package:ikman/Screens/Search/SubCategoryScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletons/skeletons.dart';
+import '../../utils/strings.dart';
+import 'Widgets/custom_category_shimer.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -22,7 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // TODO: implement initState
 
     super.initState();
-    Provider.of<MainCategorProvider>(context, listen: false).fetchCategories();
+    Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
   }
 
   @override
@@ -30,7 +32,6 @@ class _SearchScreenState extends State<SearchScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.grey[300],
-        
         appBar: AppBar(
           backgroundColor: Colors.white,
           // title: Text(
@@ -58,71 +59,83 @@ class _SearchScreenState extends State<SearchScreen> {
             )
           ],
         ),
-        body: Consumer<MainCategorProvider>(
+        body: Consumer<CategoryProvider>(
           builder: (context, value, child) {
             final categories = value.categories;
-            return GridView.builder(
-              padding: EdgeInsets.all(10.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1.0,
-                mainAxisSpacing: 0,
-                crossAxisSpacing: 0
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return GestureDetector(
-                  onTap: () {
-                    Get.to(
-                              () =>  SubCategoryScreen(categoryName:category.name,categoryIconUrl: category.image),
-                              transition: Transition.cupertino,
-                              // duration: const Duration(seconds: 1),
-                              fullscreenDialog: true,
-                              //  key: Get.key, // Provide the Get.key parameter
-                            );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 0.3
-                      )
-                    ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(30.0),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  'https://demo.satasmewebdev.online/public/images/Category/' +
-                                      category.image,
-                              placeholder: (context, url) =>
-                                  const
-                                  
-                                    SkeletonAvatar(
-                                                  style: SkeletonAvatarStyle(
-                                                    width: double.infinity,
-                                                    height:
-                                                        60, // Match the Image height
-                                                        shape: BoxShape.circle
-                                                  ),
-                                                ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+            if (value.isLoading) {
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomCategoryShimmer(size: size),
+                    CustomCategoryShimmer(size: size),
+                    CustomCategoryShimmer(size: size),
+                  ],
+                ),
+              );
+
+              //  else if (value.errorMessage.isNotEmpty) {
+              //   return Center(child: Text(value.errorMessage));
+              // }
+            } else {
+              return GridView.builder(
+                padding: EdgeInsets.all(10.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1.0,
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 0),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  return GestureDetector(
+                    onTap: () {
+                      value.fetcSubCategories(category.id);
+                      Get.to(
+                        () => SubCategoryScreen(
+                            categoryName: category.name,
+                            categoryIconUrl: category.image),
+                        transition: Transition.cupertino,
+                        // duration: const Duration(seconds: 1),
+                        fullscreenDialog: true,
+                        //  key: Get.key, // Provide the Get.key parameter
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey, width: 0.3)),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(30.0),
+                              child: CachedNetworkImage(
+                                imageUrl: baseUrl +
+                                    "public/images/Category/" +
+                                    category.image,
+                                placeholder: (context, url) =>
+                                    const SkeletonAvatar(
+                                  style: SkeletonAvatarStyle(
+                                      width: double.infinity,
+                                      height: 60, // Match the Image height
+                                      shape: BoxShape.circle),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
+                              //  Image.network('https://demo.satasmewebdev.online/public/images/Category/'+category.image),
                             ),
-                            //  Image.network('https://demo.satasmewebdev.online/public/images/Category/'+category.image),
-                          ),
-                          // Text(category.name),
-                        ],
+                            // Text(category.name),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
+                  );
+                },
+              );
+            }
             //  GridView.count(
             //   crossAxisCount: 3, // Number of columns
             //   padding: EdgeInsets.all(16.0),

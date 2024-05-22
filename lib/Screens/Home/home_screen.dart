@@ -1,14 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:classic_ads/utils/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:ikman/Providers/AdsProvider.dart';
-import 'package:ikman/Screens/Components/curved_bottom_shape.dart';
-import 'package:ikman/Screens/Home/MainScreen.dart';
-import 'package:ikman/Screens/Post/PostDetails.dart';
-import 'package:ikman/utils/constant.dart';
+import 'package:classic_ads/Providers/ads_provider.dart';
+import 'package:classic_ads/Screens/Components/curved_bottom_shape.dart';
+import 'package:classic_ads/Screens/Home/main_screen.dart';
+import 'package:classic_ads/Screens/Post/view_post_details.dart';
+import 'package:classic_ads/utils/constant.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -313,7 +314,7 @@ class _SecondScreenState extends State<SecondScreen> {
                         return GestureDetector(
                           onTap: () {
                             Get.to(
-                              () => const PostDetails(),
+                              () => ViewPostDetails(imageUrl: post.mainImage),
                               transition: Transition.cupertino,
                               // duration: const Duration(seconds: 1),
                               fullscreenDialog: true,
@@ -329,31 +330,33 @@ class _SecondScreenState extends State<SecondScreen> {
                                 children: [
                                   Stack(
                                     children: [
-                                ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10),
-                                          ),
-                                          child: Container(
-                                            height: 160,
-                                              alignment: Alignment.center, // Add this line to center the child
-                                            child: CachedNetworkImage(
-                                              imageUrl: post.thumbnailUrl,
-                                              placeholder: (context, url) =>
-                                                  const SkeletonAvatar(
-                                                style: SkeletonAvatarStyle(
-                                                    width: double.infinity,
-                                                    height:
-                                                        160, // Match the Image height
-                                                  ),
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                        ),
+                                        child: Container(
+                                          // height: 160,
+                                          alignment: Alignment
+                                              .center, // Add this line to center the child
+                                          child: CachedNetworkImage(
+                                            imageUrl: baseUrl +
+                                                "public/images/Ads/" +
+                                                post.mainImage,
+                                            placeholder: (context, url) =>
+                                                const SkeletonAvatar(
+                                              style: SkeletonAvatarStyle(
+                                                width: double.infinity,
+                                                height:
+                                                    160, // Match the Image height
                                               ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
                                             ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
                                           ),
                                         ),
-                                      
+                                      ),
                                       Positioned(
                                         bottom: 0,
                                         left: 0,
@@ -449,7 +452,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                "Rs 25000.00",
+                                                post.price,
                                                 style: TextStyle(
                                                     fontSize: 17,
                                                     color: Colors.black,

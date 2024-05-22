@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ikman/Controllers/CategoryController.dart';
-import 'package:ikman/Model/MainCategory.dart';
-import 'package:ikman/Model/SubCategory.dart';
+import 'package:classic_ads/Controllers/category_controller.dart';
+import 'package:classic_ads/Model/MainCategory.dart';
+import 'package:classic_ads/Model/SubCategory.dart';
 
 
 class CategoryProvider extends ChangeNotifier {

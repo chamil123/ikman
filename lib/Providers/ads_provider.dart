@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ikman/Model/Post.dart';
-import 'package:ikman/Services/ApiService.dart';
+import 'package:classic_ads/Model/Post.dart';
+import 'package:classic_ads/Services/ApiService.dart';
 
 class AdsProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -16,6 +16,7 @@ class AdsProvider extends ChangeNotifier {
     try {
       print('Fetching posts...');
       _posts = await _apiService.getPosts();
+      
       print('Fetched posts: $_posts');
       notifyListeners();
     } catch (e) {

@@ -1,14 +1,16 @@
+import 'package:classic_ads/Screens/Post/post_ads_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:ikman/Screens/FourthScreen.dart';
-import 'package:ikman/Screens/Home/HomeScreen.dart';
-import 'package:ikman/Screens/Profile/profile_screen.dart';
-import 'package:ikman/Screens/ThirdScreen.dart';
-import 'package:ikman/Screens/fifthScree.dart';
-import 'package:ikman/utils/constant.dart';
+import 'package:classic_ads/Screens/FourthScreen.dart';
+import 'package:classic_ads/Screens/Home/home_screen.dart';
+import 'package:classic_ads/Screens/Profile/profile_screen.dart';
+import 'package:classic_ads/Screens/ThirdScreen.dart';
+import 'package:classic_ads/Screens/fifthScree.dart';
+import 'package:classic_ads/utils/constant.dart';
+import 'package:get/get.dart';
 
-import '../Search/SearchScreen.dart';
+import '../Search/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -97,7 +99,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: _isShowingFloatingActionButton
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                 Get.to(
+                              () =>  PostAdsScreen(),
+                              transition: Transition.cupertino,
+                              // duration: const Duration(seconds: 1),
+                              fullscreenDialog: true,
+                 );
+                              //  
+              },
               shape: const CircleBorder(),
               child: const RawMaterialButton(
                 onPressed: null,

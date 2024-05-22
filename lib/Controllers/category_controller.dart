@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:ikman/Model/MainCategory.dart';
-import 'package:ikman/Model/Post.dart';
-import 'package:ikman/Model/SubCategory.dart';
+import 'package:classic_ads/Model/MainCategory.dart';
+import 'package:classic_ads/Model/Post.dart';
+import 'package:classic_ads/Model/SubCategory.dart';
 import '../../utils/strings.dart';
 
 class CategoryController {

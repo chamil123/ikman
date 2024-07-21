@@ -1,10 +1,14 @@
-
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:classic_ads/Controllers/location_controller.dart';
+import 'package:classic_ads/Model/District%20.dart';
+import 'package:classic_ads/Providers/ads_provider.dart';
+import 'package:classic_ads/Providers/location_provider.dart';
 import 'package:classic_ads/Screens/Components/custom_dialog.dart';
 import 'package:classic_ads/Screens/Home/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class LocationScreen extends StatefulWidget {
   @override
@@ -12,17 +16,15 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  final List<String> _items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<LocationProvider>(context, listen: false).loadDistricts();
+  }
 
   @override
   Widget build(BuildContext context) {
-      final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -37,7 +39,7 @@ class _LocationScreenState extends State<LocationScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: [ 
+        actions: [
           IconButton(
             onPressed: () {
               DialogBox().dialogBox(context, DialogType.noHeader, 'Exit form?',
@@ -54,46 +56,72 @@ class _LocationScreenState extends State<LocationScreen> {
           ),
         ],
       ),
-      body: ExpandableList(items: _items),
+      // body:
+      // ExpandableList(items: _items),
+      //  body: _buildBody(),
+      body: LocationList(),
     );
   }
 }
 
-class ExpandableList extends StatelessWidget {
-  final List<String> items;
-
-  ExpandableList({required this.items});
-
+class LocationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return ExpansionTile(
-          title: Text(
-            items[index],
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          trailing: Icon(
-            Icons.arrow_drop_down,
-            color: Colors.blue,
-          ),
-          initiallyExpanded: index == 0, // Expand the first item by default
-          children: [
-            ListTile(
-              title: Text('Subitem 1'),
-            ),
-            ListTile(
-              title: Text('Subitem 2'),
-            ),
-            ListTile(
-              title: Text('Subitem 3'),
-            ),
-          ],
-        );
+    return Consumer2<LocationProvider, AdsProvider>(
+      builder: (context, locationProvider, adsProvider, child) {
+        if (locationProvider.isLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (locationProvider.getDistrics.isEmpty) {
+          return Center(child: Text('No districts found'));
+        } else {
+          return ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemCount: locationProvider.getDistrics.length,
+            itemBuilder: (context, index) {
+              District district = locationProvider.getDistrics[index];
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.grey,
+                      width: 0.3,
+                    ),
+                  ),
+                ),
+                child: SizedBox(
+                  child: ExpansionTile(
+                    tilePadding: EdgeInsets.symmetric(
+                        horizontal: 16.0), // Adjust horizontal padding
+                    childrenPadding: EdgeInsets.only(left: 16.0),
+                    title: Text(district.nameEn),
+                    children: district.cities.map((city) {
+                      return ListTile(
+                        dense: true, // Makes the ListTile more compact
+                        visualDensity: VisualDensity(vertical: -4),
+                        title: Text(city.nameEn),
+                        // subtitle: Text(city.postcode),
+                        onTap: () {
+                          adsProvider.selectedDistrict(district);
+                          Get.toNamed(
+                            '/filter-screen',
+                            preventDuplicates: false,
+                            parameters: {'transition': 'cupertino'},
+                          );
+                          // Get.offAllNamed(
+                          //   '/',
+                          //   parameters: {'transition': 'cupertino'},
+                          // );
+                          // Handle city selection
+                          print('Selected city: ${city.nameEn}');
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+              );
+            },
+          );
+        }
       },
     );
   }

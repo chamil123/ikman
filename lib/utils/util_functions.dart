@@ -1,8 +1,6 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-
-
-
 
 class UtilFuntions {
   //navigation function
@@ -51,6 +49,8 @@ class UtilFuntions {
         (route) => false);
   }
 
-  
+  Future<bool> isNetworkAvailable() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
+  }
 }
-

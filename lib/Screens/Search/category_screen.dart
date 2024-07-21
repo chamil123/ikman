@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:classic_ads/Providers/ads_provider.dart';
 import 'package:classic_ads/Providers/category_provider.dart';
 import 'package:classic_ads/Screens/Components/custom_dialog.dart';
 import 'package:classic_ads/Screens/Home/main_screen.dart';
@@ -20,7 +21,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  bool _isHovered = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -81,16 +82,28 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       // var isLast=index= items.length - 1;
                       return InkWell(
                         onTap: () {
+
+                          Provider.of<AdsProvider>(context, listen: false).selectedCategory(categories[index]);
                           value.fetcSubCategories(categories[index].id);
-                          Get.to(
-                            () => SubCategoryScreen(
-                                categoryName: categories[index].name,
-                                categoryIconUrl: categories[index].image),
-                            transition: Transition.cupertino,
-                            // duration: const Duration(seconds: 1),
-                            fullscreenDialog: true,
-                            //  key: Get.key, // Provide the Get.key parameter
-                          );
+
+                             Get.toNamed(
+                              '/sub-category-screen',
+                              arguments: {'categoryName': categories[index].name,'categoryIconUrl': categories[index].image},
+                              preventDuplicates: false,
+                              parameters: {'transition': 'cupertino'},
+                              // transition: Transition.cupertino,
+                              // fullscreenDialog: true,
+                            );
+
+                          // Get.to(
+                          //   () => SubCategoryScreen(
+                          //       categoryName: categories[index].name,
+                          //       categoryIconUrl: categories[index].image),
+                          //   transition: Transition.cupertino,
+                          //   // duration: const Duration(seconds: 1),
+                          //   fullscreenDialog: true,
+                          //   //  key: Get.key, // Provide the Get.key parameter
+                          // );
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,

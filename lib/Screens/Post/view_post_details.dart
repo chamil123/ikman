@@ -1,3 +1,4 @@
+import 'package:classic_ads/Model/Post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:classic_ads/utils/constant.dart';
@@ -5,10 +6,10 @@ import 'package:classic_ads/utils/constant.dart';
 import '../Components/app_bar_button.dart';
 import 'Widgets/upper_section.dart';
 import 'Widgets/verified_member_bar.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 class ViewPostDetails extends StatelessWidget {
-    final String imageUrl;
-  const ViewPostDetails({super.key, required this.imageUrl,});
+    final Post post;
+  const ViewPostDetails({super.key, required this.post,});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class ViewPostDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UpperSection(size: size,imageUrl:imageUrl),
+            UpperSection(size: size,imageUrl:post.mainImage),
             Padding(
               padding:
                   const EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 0),
@@ -26,15 +27,16 @@ class ViewPostDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Honda CRV 7 Seater SUV 2018",
+                    post.title,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.normal),
                   ),
                   Text(
-                    "12 minutes ago",
+                     timeago.format(DateTime.parse(
+                                                    post.createdAt)),
                     style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                   Text(
-                    "Rs. 2325000.00",
+                    post.price,
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.blue,
@@ -46,7 +48,7 @@ class ViewPostDetails extends StatelessWidget {
                 ],
               ),
             ),
-           const Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
               child: Row(
                 children: [
@@ -55,7 +57,7 @@ class ViewPostDetails extends StatelessWidget {
                     color: Constants.themeColor,
                   ),
                   Text(
-                    "no 175/6/B new kandy road, Kadawatha 11850",
+                    '${post.mainLocation!.nameEn}, ' '${post.subLocation!.nameEn}',
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   )
                 ],
@@ -67,7 +69,10 @@ class ViewPostDetails extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                
                 children: [
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,8 +116,9 @@ class ViewPostDetails extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 10,),
-                 const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+             
                     children: [
                       Text(
                         "Description",
@@ -122,7 +128,7 @@ class ViewPostDetails extends StatelessWidget {
                         ),
                       ),
                       Text(
-                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and "),
+                          '${post.description}'),
                     ],
                   ),
                 ],

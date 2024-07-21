@@ -12,35 +12,19 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skeletons/skeletons.dart';
 
+import '../../Providers/ads_provider.dart';
 import 'Widgets/custom_sub_category_shimmer.dart';
 
 class SubCategoryScreen extends StatelessWidget {
   final String categoryName;
   final String categoryIconUrl;
-  final List<String> items = [
-    "iotems 1 ",
-    "iotems 2 ",
-    "iotems 3 ",
-    "iotems 4 ",
-    "iotems 2 ",
-    "iotems 3 ",
-    "iotems 4 ",
-    "iotems 2 ",
-    "iotems 3 ",
-    "iotems 4 ",
-    "iotems 2 ",
-    "iotems 3 ",
-    "iotems 4 ",
-    "iotems 2 ",
-    "iotems 3 ",
-    "iotems 4 ",
-    "iotems 5 "
-  ];
+
   SubCategoryScreen(
       {super.key, this.categoryName = "", this.categoryIconUrl = ""});
 
   @override
   Widget build(BuildContext context) {
+    final adsProvider = context.read<AdsProvider>();
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -127,11 +111,31 @@ class SubCategoryScreen extends StatelessWidget {
                         // var isLast=index= items.length - 1;
                         return InkWell(
                           onTap: () {
-                            Get.to(
-                              () => LocationScreen(),
-                              transition: Transition.cupertino,
-                              fullscreenDialog: true,
-                            );
+                            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :::: "+adsProvider.isLocation.toString());
+                            // Provider.of<AdsProvider>(context, listen: false)
+                            adsProvider
+                                .selectedSubCategory(subCategories[index]);
+
+                            if (adsProvider.isLocation) {
+                              Get.to(
+                                () => LocationScreen(),
+                                transition: Transition.cupertino,
+                                fullscreenDialog: true,
+                              );
+                            } else {
+                              // adsProvider.fetchPosts();
+                              // Get.offAllNamed(
+                              //   '/',
+
+                              //   parameters: {'transition': 'cupertino'},
+
+                              // );
+                              Get.toNamed(
+                                '/filter-screen',
+                                preventDuplicates: false,
+                                parameters: {'transition': 'cupertino'},
+                              );
+                            }
                           },
                           child: SizedBox(
                             child: Column(
@@ -139,10 +143,34 @@ class SubCategoryScreen extends StatelessWidget {
                                 SizedBox(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 8),
+                                        horizontal: 15, vertical: 2),
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.category),
+                                        // const Icon(Icons.category),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Color.fromARGB(
+                                                255, 193, 230, 247),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.05),
+                                                  blurRadius: 15,
+                                                  spreadRadius: 1),
+                                            ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Icon(
+                                              CupertinoIcons
+                                                  .checkmark_alt_circle_fill,
+                                              color: Colors.lightBlue,
+                                              size: 22,
+                                            ),
+                                          ),
+                                        ),
                                         SizedBox(
                                           width: 30,
                                         ),

@@ -92,14 +92,17 @@ class _SearchScreenState extends State<SearchScreen> {
                   return GestureDetector(
                     onTap: () {
                       value.fetcSubCategories(category.id);
-                      Get.to(
-                        () => SubCategoryScreen(
-                            categoryName: category.name,
-                            categoryIconUrl: category.image),
-                        transition: Transition.cupertino,
-                        // duration: const Duration(seconds: 1),
-                        fullscreenDialog: true,
-                        //  key: Get.key, // Provide the Get.key parameter
+
+                      Get.toNamed(
+                        '/sub-category-screen',
+                        arguments: {
+                          'categoryName': category.name,
+                          'categoryIconUrl': category.image
+                        },
+                        preventDuplicates: false,
+                        parameters: {'transition': 'cupertino'},
+                        // transition: Transition.cupertino,
+                        // fullscreenDialog: true,
                       );
                     },
                     child: Container(

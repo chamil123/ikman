@@ -26,13 +26,16 @@ class UpperSection extends StatelessWidget {
               baseUrl + "public/images/Ads/" + imageUrl,
               width: size.width, // Set the width to the device width
               // height: size.height *
-              //     0.3, // Set the height to 30% of the device height
+              //     0.4, // Set the heisght to 30% of the device height
               fit: BoxFit.cover, // Adjust the image fit as desired
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) {
                   return child;
                 }
+                    final double? height = loadingProgress.expectedTotalBytes != null
+          ? size.width * (loadingProgress.expectedTotalBytes! / loadingProgress.cumulativeBytesLoaded)
+          : null;
                 return SkeletonAvatar(
                   style: SkeletonAvatarStyle(
                     width: double.infinity,
@@ -44,8 +47,8 @@ class UpperSection extends StatelessWidget {
                   bool wasSynchronouslyLoaded) {
                 return ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                    // bottomLeft: Radius.circular(20),
+                    // bottomRight: Radius.circular(20),
                   ),
                   child: child,
                 );

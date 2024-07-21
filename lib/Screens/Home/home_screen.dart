@@ -11,10 +11,15 @@ import 'package:classic_ads/Screens/Home/main_screen.dart';
 import 'package:classic_ads/Screens/Post/view_post_details.dart';
 import 'package:classic_ads/utils/constant.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletons/skeletons.dart';
+// import 'package:skeletons/skeletons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:skeletons/skeletons.dart';
 import '../../utils/util_functions.dart';
 import '../Components/custom_testfiled.dart';
+// import 'Widget/custom_ads_card_shrimmer.dart';
+import 'package:shimmer/shimmer.dart';
+
+import 'Widget/custom_ads_card_shrimmer.dart';
 
 class SecondScreen extends StatefulWidget {
   @override
@@ -22,16 +27,35 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
+  final ScrollController _scrollController = ScrollController();
   // final _postController = AdsProvider();
   bool _isShowingBottomBar = true;
+  int adLayout = 2;
 
   final TextEditingController emailController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_loadMorePosts);
     final _postController = Provider.of<AdsProvider>(context, listen: false);
     _postController.fetchPosts();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _loadMorePosts() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      final _postController = Provider.of<AdsProvider>(context, listen: false);
+      if (!_postController.isLoadingMore) {
+        _postController.fetchPosts();
+      }
+    }
   }
 
   final List<Widget> items = [
@@ -156,25 +180,34 @@ class _SecondScreenState extends State<SecondScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 14.0, left: 10),
-                  child: Container(
-                    height: 44,
-                    width: 44,
-                    decoration: BoxDecoration(
-                      color: Constants.themeColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
-                          blurRadius: 10.0,
-                          spreadRadius: 1.0,
-                          offset: Offset(0.0, 4.0),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      CupertinoIcons.slider_horizontal_3,
-                      size: 21,
-                      color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(
+                        '/filter-screen',
+                        preventDuplicates: false,
+                        parameters: {'transition': 'cupertino'},
+                      );
+                    },
+                    child: Container(
+                      height: 44,
+                      width: 44,
+                      decoration: BoxDecoration(
+                        color: Constants.themeColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 10.0,
+                            spreadRadius: 1.0,
+                            offset: Offset(0.0, 4.0),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        CupertinoIcons.slider_horizontal_3,
+                        size: 21,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -186,6 +219,7 @@ class _SecondScreenState extends State<SecondScreen> {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification notification) {
           if (notification is ScrollUpdateNotification) {
+            _loadMorePosts();
             setState(() {
               _isShowingBottomBar = notification.metrics.extentAfter > 0;
             });
@@ -193,6 +227,7 @@ class _SecondScreenState extends State<SecondScreen> {
           return false;
         },
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Column(
             children: [
               // Add your CarouselSlider here
@@ -233,99 +268,124 @@ class _SecondScreenState extends State<SecondScreen> {
                   children: [
                     Text("all ads"),
                     Container(
-                        width: 70,
-                        height: 33,
-                        padding: EdgeInsets.all(5),
-                        // color: Colors.amberAccent,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Consumer<AdsProvider>(
-                          builder: (context, provider, child) {
-                            return Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    provider.toggleSelection("Left");
-                                  },
-                                  child: Container(
-                                    width: 31,
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: provider.isLeftIconSelected
-                                          ? Colors.grey[300]
-                                          : Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Icon(
-                                      CupertinoIcons.square_grid_2x2_fill,
-                                      size: 12,
-                                      color: provider.isLeftIconSelected
-                                          ? Colors.grey[500]
-                                          : Colors.grey[700],
-                                    ),
+                      width: 70,
+                      height: 33,
+                      padding: EdgeInsets.all(5),
+                      // color: Colors.amberAccent,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Consumer<AdsProvider>(
+                        builder: (context, provider, child) {
+                          return Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  provider.toggleSelection("Left");
+                                  print(">>>");
+                                  setState(() {
+                                    adLayout = 2;
+                                  });
+                                },
+                                child: Container(
+                                  width: 31,
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: provider.isLeftIconSelected
+                                        ? Colors.grey[300]
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(
+                                    CupertinoIcons.square_grid_2x2_fill,
+                                    size: 12,
+                                    color: provider.isLeftIconSelected
+                                        ? Colors.grey[500]
+                                        : Colors.grey[700],
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    provider.toggleSelection("Right");
-                                  },
-                                  child: Container(
-                                    width: 26,
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: provider.isRightIconSelected
-                                          ? Colors.grey[300]
-                                          : Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Icon(
-                                      CupertinoIcons.rectangle_grid_1x2_fill,
-                                      size: 12,
-                                      color: provider.isRightIconSelected
-                                          ? Colors.grey[500]
-                                          : Colors.grey[700],
-                                    ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  provider.toggleSelection("Right");
+                                  setState(() {
+                                    adLayout = 1;
+                                  });
+                                },
+                                child: Container(
+                                  width: 26,
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: provider.isRightIconSelected
+                                        ? Colors.grey[300]
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                )
-                              ],
-                            );
-                          },
-                        ))
+                                  child: Icon(
+                                    CupertinoIcons.rectangle_grid_1x2_fill,
+                                    size: 12,
+                                    color: provider.isRightIconSelected
+                                        ? Colors.grey[500]
+                                        : Colors.grey[700],
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
+
+//////////////////////
+              ///
+// CustomAdsCardShimmer(),
+              // CustomAdsCardShimmer(adLayout: adLayout, size: size),
+
+              ////////////
               Consumer<AdsProvider>(
                 builder: (context, controller, child) {
-                  if (controller.getPosts.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
+                  if (controller.getPosts.isEmpty &&
+                      controller.currentPage == 1) {
+                    return 
+                      CustomAdsCardShimmer(adLayout: adLayout, size: size);
+                    //  SizedBox.shrink();
+                  } 
+                  // else if (controller.getPosts.isEmpty) {
+                  //   return  Center(child: 
+                  //   CustomAdsCardShimmer(adLayout: adLayout, size: size)
+                  //   // CircularProgressIndicator()
+                  //   );
+                  // }
+                   else {
                     return MasonryGridView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: controller.getPosts.length,
                       gridDelegate:
                           SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                        crossAxisCount: adLayout,
                       ),
                       itemBuilder: (context, index) {
                         final post = controller.getPosts[index];
                         return GestureDetector(
                           onTap: () {
-                            Get.to(
-                              () => ViewPostDetails(imageUrl: post.mainImage),
-                              transition: Transition.cupertino,
-                              // duration: const Duration(seconds: 1),
-                              fullscreenDialog: true,
-                              //  key: Get.key, // Provide the Get.key parameter
+                            Get.toNamed(
+                              '/view-post-details',
+                              arguments: {'post': post},
+                              preventDuplicates: false,
+                              parameters: {'transition': 'cupertino'},
+                              // transition: Transition.cupertino,
+                              // fullscreenDialog: true,
                             );
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: SizedBox(
-                              width: double
-                                  .infinity, // or any specific width value
+                              width: double.infinity,
                               child: Column(
                                 children: [
                                   Stack(
@@ -540,6 +600,11 @@ class _SecondScreenState extends State<SecondScreen> {
                   }
                 },
               ),
+              if (Provider.of<AdsProvider>(context).isLoadingMore)
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
             ],
           ),
         ),

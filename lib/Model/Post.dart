@@ -1,3 +1,6 @@
+import 'package:classic_ads/Model/MainCategory.dart';
+import 'package:classic_ads/Model/SubCategory.dart';
+
 class Post {
   final int id;
   final String adsId;
@@ -8,25 +11,25 @@ class Post {
   final String description;
   final String price;
   final String mainImage;
-  // final String subImage;
-  // final int catId;
-  // final int subCatId;
-  // final int userId;
-  // final dynamic adsPackage;
-  // final dynamic packageType;
-  // final dynamic packageExpireAt;
+  final String subImage;
+  final int catId;
+  final int subCatId;
+  final int userId;
+  final dynamic adsPackage;
+  final dynamic packageType;
+  final dynamic packageExpireAt;
   // final String bumpUpAt;
-  // final String viewCountr;
-  // final String clickCountr;
-  // final dynamic priceType;
-  // final dynamic postType;
-  // final int status;
-  // final String createdAt;
-  // final String updatedAt;
-  // final MainLocation mainLocation;
-  // final SubLocation subLocation;
-  // final Category category;
-  // final Subcategory subcategory;
+  final String viewCountr;
+  final String clickCountr;
+  final dynamic priceType;
+  final dynamic postType;
+  final int status;
+  final String createdAt;
+  final String updatedAt;
+  final MainLocation mainLocation;
+  final SubLocation subLocation;
+  final MainCategory category;
+  final SubCategory subcategory;
 
   Post({
     required this.id,
@@ -38,25 +41,25 @@ class Post {
     required this.description,
     required this.price,
     required this.mainImage,
-    // required this.subImage,
-    // required this.catId,
-    // required this.subCatId,
-    // required this.userId,
-    // required this.adsPackage,
-    // required this.packageType,
-    // required this.packageExpireAt,
+    required this.subImage,
+    required this.catId,
+    required this.subCatId,
+    required this.userId,
+    required this.adsPackage,
+    required this.packageType,
+    required this.packageExpireAt,
     // required this.bumpUpAt,
-    // required this.viewCountr,
-    // required this.clickCountr,
-    // required this.priceType,
-    // required this.postType,
-    // required this.status,
-    // required this.createdAt,
-    // required this.updatedAt,
-    // required this.mainLocation,
-    // required this.subLocation,
-    // required this.category,
-    // required this.subcategory,
+    required this.viewCountr,
+    required this.clickCountr,
+    required this.priceType,
+    required this.postType,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.mainLocation,
+    required this.subLocation,
+    required this.category,
+    required this.subcategory,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
@@ -70,25 +73,25 @@ class Post {
       description: json['description'],
       price: json['price'],
       mainImage: json['mainImage'],
-      // subImage: json['subImage'],
-      // catId: json['cat_id'] != null ? int.parse(json['cat_id'].toString()) : 0,
-      // subCatId: json['sub_cat_id'] != null ? int.parse(json['sub_cat_id'].toString()) : 0,
-      // userId: json['user_id'] != null ? int.parse(json['user_id'].toString()) : 0,
-      // adsPackage: json['ads_package'],
-      // packageType: json['package_type'],
-      // packageExpireAt: json['package_expire_at'],
+      subImage: json['subImage'],
+      catId: json['cat_id'] != null ? int.parse(json['cat_id'].toString()) : 0,
+      subCatId: json['sub_cat_id'] != null ? int.parse(json['sub_cat_id'].toString()) : 0,
+      userId: json['user_id'] != null ? int.parse(json['user_id'].toString()) : 0,
+      adsPackage: json['ads_package'],
+      packageType: json['package_type'],
+      packageExpireAt: json['package_expire_at'],
       // bumpUpAt: json['bump_up_at'],
-      // viewCountr: json['view_counr'],
-      // clickCountr: json['click_counr'],
-      // priceType: json['price_type'],
-      // postType: json['post_type'],
-      // status: json['status'] != null ? int.parse(json['status'].toString()) : 0,
-      // createdAt: json['created_at'],
-      // updatedAt: json['updated_at'],
-      // mainLocation: MainLocation.fromJson(json['main_location']),
-      // subLocation: SubLocation.fromJson(json['sub_location']),
-      // category: Category.fromJson(json['category']),
-      // subcategory: Subcategory.fromJson(json['subcategory']),
+      viewCountr: json['view_counr'],
+      clickCountr: json['click_counr'],
+      priceType: json['price_type'],
+      postType: json['post_type'],
+      status: json['status'] != null ? int.parse(json['status'].toString()) : 0,
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      mainLocation: MainLocation.fromJson(json['main_location']),
+      subLocation: SubLocation.fromJson(json['sub_location']),
+      category: MainCategory.fromJson(json['category']),
+      subcategory: SubCategory.fromJson(json['subcategory']),
     );
   }
 }
@@ -166,78 +169,78 @@ class SubLocation {
   }
 }
 
-class Category {
-  final int id;
-  final int mainId;
-  final String name;
-  final String url;
-  final dynamic description;
-  final String image;
-  final int status;
-  final String createdAt;
-  final String updatedAt;
+// class Category {
+//   final int id;
+//   final int mainId;
+//   final String name;
+//   final String url;
+//   final dynamic description;
+//   final String image;
+//   final int status;
+//   final String createdAt;
+//   final String updatedAt;
 
-  Category({
-    required this.id,
-    required this.mainId,
-    required this.name,
-    required this.url,
-    required this.description,
-    required this.image,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+//   Category({
+//     required this.id,
+//     required this.mainId,
+//     required this.name,
+//     required this.url,
+//     required this.description,
+//     required this.image,
+//     required this.status,
+//     required this.createdAt,
+//     required this.updatedAt,
+//   });
 
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(
-      id: json['id'],
-      mainId: json['mainId'],
-      name: json['name'],
-      url: json['url'],
-      description: json['description'],
-      image: json['image'],
-      status: json['status'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-    );
-  }
-}
+//   factory Category.fromJson(Map<String, dynamic> json) {
+//     return Category(
+//       id: json['id'],
+//       mainId: json['mainId'],
+//       name: json['name'],
+//       url: json['url'],
+//       description: json['description'],
+//       image: json['image'],
+//       status: json['status'],
+//       createdAt: json['created_at'],
+//       updatedAt: json['updated_at'],
+//     );
+//   }
+// }
 
-class Subcategory {
-  final int id;
-  final int mainId;
-  final String name;
-  final String url;
-  final dynamic description;
-  final String image;
-  final int status;
-  final String createdAt;
-  final String updatedAt;
+// class Subcategory {
+//   final int id;
+//   final int mainId;
+//   final String name;
+//   final String url;
+//   final dynamic description;
+//   final String image;
+//   final int status;
+//   final String createdAt;
+//   final String updatedAt;
 
-  Subcategory({
-    required this.id,
-    required this.mainId,
-    required this.name,
-    required this.url,
-    required this.description,
-    required this.image,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+//   Subcategory({
+//     required this.id,
+//     required this.mainId,
+//     required this.name,
+//     required this.url,
+//     required this.description,
+//     required this.image,
+//     required this.status,
+//     required this.createdAt,
+//     required this.updatedAt,
+//   });
 
-  factory Subcategory.fromJson(Map<String, dynamic> json) {
-    return Subcategory(
-      id: json['id'],
-      mainId: json['mainId'],
-      name: json['name'],
-      url: json['url'],
-      description: json['description'],
-      image: json['image'],
-      status: json['status'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-    );
-  }
-}
+//   factory Subcategory.fromJson(Map<String, dynamic> json) {
+//     return Subcategory(
+//       id: json['id'],
+//       mainId: json['mainId'],
+//       name: json['name'],
+//       url: json['url'],
+//       description: json['description'],
+//       image: json['image'],
+//       status: json['status'],
+//       createdAt: json['created_at'],
+//       updatedAt: json['updated_at'],
+//     );
+//   }
+// }

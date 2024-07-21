@@ -1,3 +1,4 @@
+import 'package:classic_ads/Providers/ads_provider.dart';
 import 'package:classic_ads/Providers/category_provider.dart';
 import 'package:classic_ads/Screens/Search/category_screen.dart';
 import 'package:classic_ads/Screens/Search/search_screen.dart';
@@ -87,12 +88,14 @@ class _PostAdsScreenState extends State<PostAdsScreen> {
                       ),
                       child: InkWell(
                         onTap: () {
+                           Provider.of<AdsProvider>(context, listen: false)
+                              .setIsLocation(true);
                           Provider.of<CategoryProvider>(context, listen: false)
                               .fetchCategories();
-                          Get.to(
-                            () => CategoryScreen(),
-                            transition: Transition.cupertino,
-                            fullscreenDialog: true,
+                          Get.toNamed(
+                            '/category-screen',
+                            preventDuplicates: false,
+                            parameters: {'transition': 'cupertino'},
                           );
                         },
                         child: Align(

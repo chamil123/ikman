@@ -62,9 +62,9 @@ class AdsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectedCategory(MainCategory category, [bool isLocation = false]) {
+  void selectedCategory(MainCategory category) {
     _category = category;
-    _isLocation = isLocation;
+    // _isLocation = isLocation;
     notifyListeners();
   }
 

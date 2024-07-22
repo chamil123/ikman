@@ -7,6 +7,7 @@ import 'package:classic_ads/Providers/category_provider.dart';
 import 'package:classic_ads/Screens/Search/SubCategoryScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletons/skeletons.dart';
+import '../../Providers/ads_provider.dart';
 import '../../utils/strings.dart';
 import 'Widgets/custom_category_shimer.dart';
 
@@ -91,6 +92,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   final category = categories[index];
                   return GestureDetector(
                     onTap: () {
+                      Provider.of<AdsProvider>(context, listen: false)
+                          .setIsLocation();
                       value.fetcSubCategories(category.id);
 
                       Get.toNamed(
@@ -139,30 +142,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
               );
             }
-            //  GridView.count(
-            //   crossAxisCount: 3, // Number of columns
-            //   padding: EdgeInsets.all(16.0),
-            //   mainAxisSpacing: 0, // Set to 0 to remove vertical spacing
-            //   crossAxisSpacing: 0, // Set to 0 to remove horizontal spacing
-            //   children: List.generate(
-            //     15, // Number of items
-            //     (index) {
-            //       // return Card(
-
-            //       return Container(
-            //         color: Colors.teal[100 * ((index % 9) + 1)], // Random color
-            //         child: Text(
-            //           'Item $index', // Replace with your item data
-            //           style: TextStyle(
-            //             fontSize: 18.0,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-            //       );
-            //       // );
-            //     },
-            //   ),
-            // );
           },
         ));
   }

@@ -10,12 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../Form/vehicle_ad_form.dart';
+
 class LocationScreen extends StatefulWidget {
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+
   @override
   void initState() {
     super.initState();
@@ -64,7 +67,13 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 }
 
-class LocationList extends StatelessWidget {
+class LocationList extends StatefulWidget {
+  @override
+  State<LocationList> createState() => _LocationListState();
+}
+
+class _LocationListState extends State<LocationList> {
+    String _selectedCategory = 'Vehicle';
   @override
   Widget build(BuildContext context) {
     return Consumer2<LocationProvider, AdsProvider>(
@@ -102,17 +111,21 @@ class LocationList extends StatelessWidget {
                         // subtitle: Text(city.postcode),
                         onTap: () {
                           adsProvider.selectedDistrict(district);
-                          Get.toNamed(
-                            '/filter-screen',
-                            preventDuplicates: false,
-                            parameters: {'transition': 'cupertino'},
-                          );
-                          // Get.offAllNamed(
-                          //   '/',
-                          //   parameters: {'transition': 'cupertino'},
-                          // );
-                          // Handle city selection
-                          print('Selected city: ${city.nameEn}');
+                          if (adsProvider.isLocation) {
+                           setState(() {
+                                                 _selectedCategory = adsProvider.getSelectedCaegory!.name!;
+
+                           });
+                            print('+++++++++++++++++++++++++' +
+                                adsProvider.getSelectedCaegory!.name);
+                          } else {
+                            Get.toNamed(
+                              '/filter-screen',
+                              preventDuplicates: false,
+                              parameters: {'transition': 'cupertino'},
+                            );
+                            print('Selected city: ${city.nameEn}');
+                          }
                         },
                       );
                     }).toList(),
@@ -124,5 +137,31 @@ class LocationList extends StatelessWidget {
         }
       },
     );
+  }
+
+  Widget _buildCategoryForm() {
+    void onSave(Map<String, dynamic> formData) async {
+      // Add category to form data
+      formData['category'] = _selectedCategory;
+
+      // Create ad using controller
+      // await _adController.createAd(formData);
+
+      // Update provider
+      // Provider.of<AdsProvider>(context, listen: false).addAd(formData);
+
+      // Navigate back or show success message
+      Navigator.pop(context);
+    }
+
+    switch (_selectedCategory) {
+      case 'Vehicle':
+        return VehicleAdForm(onSave: onSave);
+      // case 'Property':
+      //   return PropertyAdForm(onSave: onSave);
+      // Add cases for other categories
+      default:
+        return Container(); // Or a default form
+    }
   }
 }

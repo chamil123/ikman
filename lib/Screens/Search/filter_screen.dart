@@ -25,7 +25,7 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final adsProvider=context.read<AdsProvider>();
+    final adsProvider = context.read<AdsProvider>();
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -86,8 +86,9 @@ class _FilterScreenState extends State<FilterScreen> {
                           color: Colors.green,
                         ),
                         SizedBox(width: 10),
-                        adsProvider.getdistric!=null?Text(adsProvider.getdistric!.nameEn):
-                        Text('All Country'),
+                        adsProvider.getdistric != null
+                            ? Text(adsProvider.getdistric!.nameEn)
+                            : Text('All Country'),
                       ]),
                     ),
                   ),
@@ -99,6 +100,9 @@ class _FilterScreenState extends State<FilterScreen> {
                   onTap: () {
                     Provider.of<CategoryProvider>(context, listen: false)
                         .fetchCategories();
+                    Provider.of<AdsProvider>(context, listen: false)
+                        .setIsLocation();
+
                     Get.toNamed(
                       '/category-screen',
                       preventDuplicates: false,
@@ -116,8 +120,9 @@ class _FilterScreenState extends State<FilterScreen> {
                           color: Colors.blue,
                         ),
                         SizedBox(width: 10),
-                          adsProvider.getSubCategory!=null?Text(adsProvider.getSubCategory!.name):
-                        Text('All Category'),
+                        adsProvider.getSubCategory != null
+                            ? Text(adsProvider.getSubCategory!.name)
+                            : Text('All Category'),
                       ]),
                     ),
                   ),
@@ -149,10 +154,10 @@ class _FilterScreenState extends State<FilterScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                          Get.offAllNamed(
-                            '/',
-                            parameters: {'transition': 'cupertino'},
-                          );
+                        Get.offAllNamed(
+                          '/',
+                          parameters: {'transition': 'cupertino'},
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 15),

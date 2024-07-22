@@ -9,7 +9,9 @@ import 'package:classic_ads/Screens/ThirdScreen.dart';
 import 'package:classic_ads/Screens/fifthScree.dart';
 import 'package:classic_ads/utils/constant.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
+import '../../Providers/ads_provider.dart';
 import '../Search/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,20 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
               // Add your drawer content here
               child: ListView(
                 children: [
-                const  DrawerHeader(
+                  const DrawerHeader(
                     child: Text('Drawer Header'),
                     decoration: BoxDecoration(
                       color: Colors.blue,
                     ),
                   ),
                   ListTile(
-                    title:const Text('Item 1'),
+                    title: const Text('Item 1'),
                     onTap: () {
                       // Handle drawer item tap
                     },
                   ),
                   ListTile(
-                    title:const Text('Item 2'),
+                    title: const Text('Item 2'),
                     onTap: () {
                       // Handle drawer item tap
                     },
@@ -100,13 +102,15 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: _isShowingFloatingActionButton
           ? FloatingActionButton(
               onPressed: () {
-                 Get.to(
-                              () =>  PostAdsScreen(),
-                              transition: Transition.cupertino,
-                              // duration: const Duration(seconds: 1),
-                              fullscreenDialog: true,
-                 );
-                              //  
+                Provider.of<AdsProvider>(context, listen: false)
+                    .setIsLocation(true);
+                Get.to(
+                  () => PostAdsScreen(),
+                  transition: Transition.cupertino,
+                  // duration: const Duration(seconds: 1),
+                  fullscreenDialog: true,
+                );
+                //
               },
               shape: const CircleBorder(),
               child: const RawMaterialButton(
@@ -184,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ? Colors.blue
                                         : Colors.grey,
                                   ),
-                                 const Text("Search")
+                                  const Text("Search")
                                 ],
                               ),
                             ),

@@ -54,6 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ListTile(
                     title: const Text('Item 1'),
                     onTap: () {
+                      Get.toNamed(
+                        '/ad-screen',
+                        preventDuplicates: false,
+                        parameters: {'transition': 'cupertino'},
+                      );
                       // Handle drawer item tap
                     },
                   ),

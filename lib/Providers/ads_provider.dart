@@ -83,4 +83,8 @@ class AdsProvider extends ChangeNotifier {
     print(">>>>>>>>>>SSSSSSSSS : "+_isLocation.toString());
     notifyListeners();
   }
+
+  Future<void> addAd(Map<String, dynamic> adData) async {
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OOOOOO : " + adData.toString());
+}
 }

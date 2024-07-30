@@ -118,6 +118,11 @@ class _LocationListState extends State<LocationList> {
                            });
                             print('+++++++++++++++++++++++++' +
                                 adsProvider.getSelectedCaegory!.name);
+                                  Get.toNamed(
+                              '/ad-screen',
+                              preventDuplicates: false,
+                              parameters: {'transition': 'cupertino'},
+                            );
                           } else {
                             Get.toNamed(
                               '/filter-screen',
@@ -139,29 +144,5 @@ class _LocationListState extends State<LocationList> {
     );
   }
 
-  Widget _buildCategoryForm() {
-    void onSave(Map<String, dynamic> formData) async {
-      // Add category to form data
-      formData['category'] = _selectedCategory;
 
-      // Create ad using controller
-      // await _adController.createAd(formData);
-
-      // Update provider
-      // Provider.of<AdsProvider>(context, listen: false).addAd(formData);
-
-      // Navigate back or show success message
-      Navigator.pop(context);
-    }
-
-    switch (_selectedCategory) {
-      case 'Vehicle':
-        return VehicleAdForm(onSave: onSave);
-      // case 'Property':
-      //   return PropertyAdForm(onSave: onSave);
-      // Add cases for other categories
-      default:
-        return Container(); // Or a default form
-    }
-  }
 }

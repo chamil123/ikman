@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../Screens/Home/main_screen.dart';
 import '../Screens/Post/AdComponants/location_screen.dart';
+import '../Screens/Post/Form/ad_screen.dart';
 import '../Screens/Post/view_post_details.dart';
 import '../Screens/Search/SubCategoryScreen.dart';
 import '../Screens/Search/filter_screen.dart';
@@ -45,6 +46,13 @@ final routes = [
     transition: Transition.cupertino,
     fullscreenDialog: true,
   ),
+    GetPage(
+    name: '/ad-screen',
+    page: () => CreateAdScreen(),
+    transition: Transition.cupertino,
+    fullscreenDialog: true,
+  ),
+  
   
    
 ];

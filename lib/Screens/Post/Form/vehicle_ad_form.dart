@@ -4,32 +4,51 @@ import '../Widgets/base_form.dart';
 
 
 class VehicleAdForm extends BaseAdForm {
-  VehicleAdForm({required void Function(Map<String, dynamic>) onSave}) : super(onSave: onSave);
+  VehicleAdForm({required void Function(Map<String, dynamic>) onSave})
+      : super(onSave: onSave);
 
   @override
-  List<Widget> buildCategoryFields() {
+  VehicleAdFormState createState() => VehicleAdFormState();
+
+  @override
+  List<Widget> buildCategoryFields(Map<String, dynamic> formData) {
     return [
       TextFormField(
         decoration: InputDecoration(labelText: 'Make'),
-        // Add validation and saving logic
+        onSaved: (value) => formData['make'] = value,
+         validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter the make';
+          }
+          return null;
+        },
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Model'),
-        // Add validation and saving logic
+        onSaved: (value) => formData['model'] = value,
+         validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter the model';
+          }
+          return null;
+        },
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Year'),
         keyboardType: TextInputType.number,
-        // Add validation and saving logic
+        onSaved: (value) => formData['year'] = int.tryParse(value ?? ''),
+         validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter the year';
+          }
+          if (int.tryParse(value) == null) {
+            return 'Please enter a valid year';
+          }
+          return null;
+        },
       ),
     ];
   }
 }
 
-// Similarly, create forms for other categories:
-// property_ad_form.dart
-// electronic_item_ad_form.dart
-// animal_ad_form.dart
-// service_ad_form.dart
-// education_ad_form.dart
-// job_ad_form.dart
+class VehicleAdFormState extends BaseAdFormState {}

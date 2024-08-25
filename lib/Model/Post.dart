@@ -18,7 +18,7 @@ class Post {
   final dynamic adsPackage;
   final dynamic packageType;
   final dynamic packageExpireAt;
-  // final String bumpUpAt;
+  final String bumpUpAt;
   final String viewCountr;
   final String clickCountr;
   final dynamic priceType;
@@ -48,7 +48,7 @@ class Post {
     required this.adsPackage,
     required this.packageType,
     required this.packageExpireAt,
-    // required this.bumpUpAt,
+    required this.bumpUpAt,
     required this.viewCountr,
     required this.clickCountr,
     required this.priceType,
@@ -80,7 +80,7 @@ class Post {
       adsPackage: json['ads_package'],
       packageType: json['package_type'],
       packageExpireAt: json['package_expire_at'],
-      // bumpUpAt: json['bump_up_at'],
+      bumpUpAt: json['bump_up_at'],
       viewCountr: json['view_counr'],
       clickCountr: json['click_counr'],
       priceType: json['price_type'],

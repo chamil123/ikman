@@ -111,7 +111,6 @@ class SubCategoryScreen extends StatelessWidget {
                         // var isLast=index= items.length - 1;
                         return InkWell(
                           onTap: () {
-                            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :::: "+adsProvider.isLocation.toString());
                             // Provider.of<AdsProvider>(context, listen: false)
                             adsProvider
                                 .selectedSubCategory(subCategories[index]);

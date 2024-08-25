@@ -18,7 +18,6 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -73,7 +72,7 @@ class LocationList extends StatefulWidget {
 }
 
 class _LocationListState extends State<LocationList> {
-    String _selectedCategory = 'Vehicle';
+  String _selectedCategory = 'Vehicle';
   @override
   Widget build(BuildContext context) {
     return Consumer2<LocationProvider, AdsProvider>(
@@ -110,15 +109,14 @@ class _LocationListState extends State<LocationList> {
                         title: Text(city.nameEn),
                         // subtitle: Text(city.postcode),
                         onTap: () {
-                          adsProvider.selectedDistrict(district);
-                          if (adsProvider.isLocation) {
-                           setState(() {
-                                                 _selectedCategory = adsProvider.getSelectedCaegory!.name!;
 
-                           });
-                            print('+++++++++++++++++++++++++' +
-                                adsProvider.getSelectedCaegory!.name);
-                                  Get.toNamed(
+                          adsProvider.fetchBrands();
+                          adsProvider.selectedDistrict(district, city);
+                          if (adsProvider.isLocation) {
+                            setState(() {
+                              _selectedCategory = adsProvider.getSelectedCaegory!.name!;
+                            });
+                            Get.toNamed(
                               '/ad-screen',
                               preventDuplicates: false,
                               parameters: {'transition': 'cupertino'},
@@ -129,7 +127,6 @@ class _LocationListState extends State<LocationList> {
                               preventDuplicates: false,
                               parameters: {'transition': 'cupertino'},
                             );
-                            print('Selected city: ${city.nameEn}');
                           }
                         },
                       );
@@ -143,6 +140,4 @@ class _LocationListState extends State<LocationList> {
       },
     );
   }
-
-
 }

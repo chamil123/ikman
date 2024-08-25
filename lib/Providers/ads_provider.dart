@@ -1,22 +1,33 @@
+import 'package:classic_ads/Controllers/model_controller.dart';
+import 'package:classic_ads/Model/brand.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:classic_ads/Model/Post.dart';
 import 'package:classic_ads/Services/ApiService.dart';
 
+import '../Controllers/brand_controller.dart';
+import '../Model/Ads/base_model.dart';
 import '../Model/District .dart';
 import '../Model/MainCategory.dart';
 import '../Model/SubCategory.dart';
+import '../Model/city.dart';
+import '../Model/model.dart';
 
 class AdsProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
+  final BrandController _controller = BrandController();
+  final ModelController _modelController = ModelController();
   int _currentPage = 1;
   bool _isLoadingMore = false;
   List<Post> _posts = [];
+  List<Brand> _brand = [];
+  List<Model> _model = [];
   bool _isLeftIconSelected = true;
   bool _isRightIconSelected = false;
   MainCategory? _category;
   SubCategory? _subCategory = null;
   District? _distric = null;
+  City? _city = null;
   bool _isLocation = false;
 
   List<Post> get getPosts => _posts;
@@ -29,6 +40,9 @@ class AdsProvider extends ChangeNotifier {
   SubCategory? get getSubCategory => _subCategory;
   bool get isLocation => _isLocation;
   District? get getdistric => _distric;
+  City? get getCity => _city;
+  List<Brand> get getBrand => _brand;
+  List<Model> get getModel => _model;
 
   Future<void> fetchPosts() async {
     if (_isLoadingMore) return;
@@ -41,6 +55,38 @@ class AdsProvider extends ChangeNotifier {
       print('Fetched posts: $_posts');
     } catch (e) {
       print('Error fetching posts: $e');
+    } finally {
+      _isLoadingMore = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchBrands() async {
+    if (_isLoadingMore) return;
+    try {
+      _isLoadingMore = true;
+      print('Fetching brand...');
+      List<Brand> brand = await _controller.fetchBrands( _subCategory!.id);
+      _brand.addAll(brand);
+      print('Fetched brand: $_posts');
+    } catch (e) {
+      print('Error fetching brand: $e');
+    } finally {
+      _isLoadingMore = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchModel() async {
+    if (_isLoadingMore) return;
+    try {
+      _isLoadingMore = true;
+      print('Fetching model...');
+      List<Model> model = await _modelController.fetchModel(_subCategory!.id);
+      _model.addAll(model);
+      print('Fetched model: $_posts');
+    } catch (e) {
+      print('Error fetching model: $e');
     } finally {
       _isLoadingMore = false;
       notifyListeners();
@@ -73,18 +119,21 @@ class AdsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectedDistrict(District distric) {
+  void selectedDistrict(District distric, City city) {
     _distric = distric;
+    _city = city;
     notifyListeners();
   }
 
-  void setIsLocation([bool isLocation = false] ) {
+  void setIsLocation([bool isLocation = false]) {
     _isLocation = isLocation;
-    print(">>>>>>>>>>SSSSSSSSS : "+_isLocation.toString());
+    print(">>>>>>>>>>SSSSSSSSS : " + _isLocation.toString());
     notifyListeners();
   }
 
-  Future<void> addAd(Map<String, dynamic> adData) async {
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OOOOOO : " + adData.toString());
-}
+  Future<void> addAd(BasePostModel data) async {
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OOOOOO : " +
+        data.toString());
+    print(data.toJson().toString());
+  }
 }

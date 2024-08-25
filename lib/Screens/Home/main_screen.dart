@@ -211,7 +211,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             MaterialButton(
                               onPressed: () {
                                 setState(() {
-                                  print(">>>>>>>sdasda");
                                   currentScreen = FifthScreern();
                                   currentTab = 2;
                                 });

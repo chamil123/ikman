@@ -283,7 +283,6 @@ class _SecondScreenState extends State<SecondScreen> {
                               GestureDetector(
                                 onTap: () {
                                   provider.toggleSelection("Left");
-                                  print(">>>");
                                   setState(() {
                                     adLayout = 2;
                                   });
@@ -350,17 +349,16 @@ class _SecondScreenState extends State<SecondScreen> {
                 builder: (context, controller, child) {
                   if (controller.getPosts.isEmpty &&
                       controller.currentPage == 1) {
-                    return 
-                      CustomAdsCardShimmer(adLayout: adLayout, size: size);
+                    return CustomAdsCardShimmer(adLayout: adLayout, size: size);
                     //  SizedBox.shrink();
-                  } 
+                  }
                   // else if (controller.getPosts.isEmpty) {
-                  //   return  Center(child: 
+                  //   return  Center(child:
                   //   CustomAdsCardShimmer(adLayout: adLayout, size: size)
                   //   // CircularProgressIndicator()
                   //   );
                   // }
-                   else {
+                  else {
                     return MasonryGridView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -400,21 +398,22 @@ class _SecondScreenState extends State<SecondScreen> {
                                           alignment: Alignment
                                               .center, // Add this line to center the child
                                           child: CachedNetworkImage(
-                                            imageUrl: baseUrl +
-                                                "public/images/Ads/" +
-                                                post.mainImage,
-                                            placeholder: (context, url) =>
-                                                const SkeletonAvatar(
-                                              style: SkeletonAvatarStyle(
-                                                width: double.infinity,
-                                                height:
-                                                    160, // Match the Image height
-                                              ),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error),
-                                          ),
+  imageUrl: baseUrl + "public/images/Ads/" + post.mainImage,
+  placeholder: (context, url) => const SkeletonAvatar(
+    style: SkeletonAvatarStyle(
+      width: double.infinity,
+      height: 160,
+    ),
+  ),
+  errorWidget: (context, url, error) {
+    print('Error loading image: $error');
+    return Container(
+      color: Colors.grey[300],
+      child: Icon(Icons.error),
+    );
+  },
+  fit: BoxFit.cover,
+),
                                         ),
                                       ),
                                       Positioned(

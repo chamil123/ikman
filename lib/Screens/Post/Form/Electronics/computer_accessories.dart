@@ -6,13 +6,13 @@ import 'package:provider/provider.dart';
 import '../../../Components/Custom_dropdown_decoration.dart';
 import '../../Widgets/base_form.dart';
 
-class MobilePhoneAdForm extends BaseAdForm {
-  MobilePhoneAdForm(
+class ComputerAccessoriesAdForm extends BaseAdForm {
+  ComputerAccessoriesAdForm(
       {Key? key, required void Function(Map<String, dynamic>) onSave})
       : super(key: key, onSave: onSave);
 
   @override
-  MobilePhoneAdFormState createState() => MobilePhoneAdFormState();
+  ComputerAccessoriesAdFormState createState() => ComputerAccessoriesAdFormState();
 
   @override
   List<Widget> buildCategoryFields(
@@ -26,20 +26,21 @@ class MobilePhoneAdForm extends BaseAdForm {
       buildConditionField(formData, setState),
       const SizedBox(height: 10),
       buildDropdownField(
-        'brand',
-        'Select Brand',
+        'Device Type',
+        'Select a type',
         formData,
         setState,
       ),
       const SizedBox(height: 20),
       buildDropdownModelField(
-        'model',
-        'Select a model',
+        'Brand Name',
+        'Select a Brand',
         formData,
         setState,
       ),
       const SizedBox(height: 15),
-      buildSpecializationField(formData, setState),
+      // buildDropdownModelField(formData, setState),
+      
       const SizedBox(height: 15),
       buildPriceTypeField(formData, setState),
       const SizedBox(height: 15),
@@ -193,48 +194,6 @@ class MobilePhoneAdForm extends BaseAdForm {
     );
   }
 
-  Widget buildSpecializationField(
-      Map<String, dynamic> formData, Function(void Function()) setState) {
-    List<String> features = [
-      '4G',
-      '5G',
-      'Dual SIM',
-      'Micro SIM',
-      'Mini SIM',
-      'USB Type-C',
-      'Fast Charging',
-      'Flash',
-      'Android',
-      'iOS',
-      'Expandable Storage',
-      'Bluetooth',
-      'WiFi',
-      'GPS',
-      'Fingerprint',
-      'Infrared'
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text("Specialization"),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 5,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 0,
-          ),
-          itemCount: features.length,
-          itemBuilder: (context, index) {
-            return buildCheckbox(features[index], formData, setState);
-          },
-        ),
-      ],
-    );
-  }
 
   Widget buildCheckbox(String feature, Map<String, dynamic> formData,
       Function(void Function()) setState) {
@@ -437,4 +396,4 @@ class MobilePhoneAdForm extends BaseAdForm {
 
 }
 
-class MobilePhoneAdFormState extends BaseAdFormState {}
+class ComputerAccessoriesAdFormState extends BaseAdFormState {}

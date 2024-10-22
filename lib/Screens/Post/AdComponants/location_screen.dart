@@ -44,9 +44,12 @@ class _LocationScreenState extends State<LocationScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              DialogBox().dialogBox(context, DialogType.noHeader, 'Exit form?',
+              DialogBox().dialogBox(
+                  context,
+                  DialogType.noHeader,
+                  'Exit form?',
                   'Are you sure want to exit from this form?\n if you do, all you entered data will be lost.',
-                  () {
+                  false, () {
                 Get.to(
                   () => const HomeScreen(),
                   transition: Transition.cupertino,
@@ -109,12 +112,12 @@ class _LocationListState extends State<LocationList> {
                         title: Text(city.nameEn),
                         // subtitle: Text(city.postcode),
                         onTap: () {
-
                           adsProvider.fetchBrands();
                           adsProvider.selectedDistrict(district, city);
                           if (adsProvider.isLocation) {
                             setState(() {
-                              _selectedCategory = adsProvider.getSelectedCaegory!.name!;
+                              _selectedCategory =
+                                  adsProvider.getSelectedCaegory!.name!;
                             });
                             Get.toNamed(
                               '/ad-screen',

@@ -5,7 +5,7 @@ class SubCategory {
   final String url;
   final String? description;
   final String image;
-  final String status;
+  final int status;
   final String createdAt;
   final String updatedAt;
 
@@ -29,7 +29,7 @@ class SubCategory {
       url: json['url'],
       description: json['description'],
       image: json['image'],
-      status: json['status'],
+      status: json['status']!=null?int.parse(json['status'].toString()):0,
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
     );

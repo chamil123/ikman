@@ -65,9 +65,12 @@ class SubCategoryScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              DialogBox().dialogBox(context, DialogType.noHeader, 'Exit form?',
+              DialogBox().dialogBox(
+                  context,
+                  DialogType.noHeader,
+                  'Exit form?',
                   'Are you sure want to exit from this form?\n if you do, all you entered data will be lost.',
-                  () {
+                  false, () {
                 Get.offAll(
                   () => const HomeScreen(),
                   transition: Transition.cupertino,

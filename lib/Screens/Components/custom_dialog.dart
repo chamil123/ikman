@@ -7,17 +7,23 @@ class DialogBox {
     DialogType dialogType,
     String title,
     String desc,
-    final Function() okPres,
+    bool isCancelBtn,
     final Function() cancelPres,
+    final Function() okPres,
+    
   ) async {
     return AwesomeDialog(
       context: context,
       dialogType: dialogType,
-      animType: AnimType.bottomSlide,
+      animType: AnimType.bottomSlide  ,
       title: title,
       desc: desc,
+      descTextStyle:const TextStyle(
+        fontSize: 15,
+      ),
+
+      btnCancelOnPress: isCancelBtn ? cancelPres : null,
       btnOkOnPress: okPres,
-      btnCancelOnPress: cancelPres,
     ).show();
   }
 }

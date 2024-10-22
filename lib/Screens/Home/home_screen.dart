@@ -398,22 +398,26 @@ class _SecondScreenState extends State<SecondScreen> {
                                           alignment: Alignment
                                               .center, // Add this line to center the child
                                           child: CachedNetworkImage(
-  imageUrl: baseUrl + "public/images/Ads/" + post.mainImage,
-  placeholder: (context, url) => const SkeletonAvatar(
-    style: SkeletonAvatarStyle(
-      width: double.infinity,
-      height: 160,
-    ),
-  ),
-  errorWidget: (context, url, error) {
-    print('Error loading image: $error');
-    return Container(
-      color: Colors.grey[300],
-      child: Icon(Icons.error),
-    );
-  },
-  fit: BoxFit.cover,
-),
+                                            imageUrl: baseUrl +
+                                                "public/images/Ads/" +
+                                                post.mainImage,
+                                            placeholder: (context, url) =>
+                                                const SkeletonAvatar(
+                                              style: SkeletonAvatarStyle(
+                                                width: double.infinity,
+                                                height: 160,
+                                              ),
+                                            ),
+                                            errorWidget: (context, url, error) {
+                                              print(
+                                                  'Error loading image: $error');
+                                              return Container(
+                                                color: Colors.grey[300],
+                                                child: Icon(Icons.error),
+                                              );
+                                            },
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                       Positioned(

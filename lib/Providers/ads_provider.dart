@@ -1,3 +1,9 @@
+import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:classic_ads/Screens/Components/custom_dialog.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:classic_ads/Controllers/model_controller.dart';
 import 'package:classic_ads/Model/brand.dart';
 import 'package:flutter/foundation.dart';
@@ -5,6 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:classic_ads/Model/Post.dart';
 import 'package:classic_ads/Services/ApiService.dart';
 
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
+
+import '../Controllers/ads_controller.dart';
 import '../Controllers/brand_controller.dart';
 import '../Model/Ads/base_model.dart';
 import '../Model/District .dart';
@@ -17,6 +28,7 @@ class AdsProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
   final BrandController _controller = BrandController();
   final ModelController _modelController = ModelController();
+  final AdsController _adsController = AdsController();
   int _currentPage = 1;
   bool _isLoadingMore = false;
   List<Post> _posts = [];
@@ -29,11 +41,15 @@ class AdsProvider extends ChangeNotifier {
   District? _distric = null;
   City? _city = null;
   bool _isLocation = false;
+  final ImagePicker _picker = ImagePicker();
+  List<File>? _file;
+  File? _imgFile;
+  int? _brandId;
+  bool _isLoading = false;
 
   List<Post> get getPosts => _posts;
   bool get isLeftIconSelected => _isLeftIconSelected;
   bool get isRightIconSelected => _isRightIconSelected;
-
   int get currentPage => _currentPage;
   bool get isLoadingMore => _isLoadingMore;
   MainCategory? get getSelectedCaegory => _category;
@@ -43,6 +59,10 @@ class AdsProvider extends ChangeNotifier {
   City? get getCity => _city;
   List<Brand> get getBrand => _brand;
   List<Model> get getModel => _model;
+  List<File>? get getCropImg => _file;
+  File? get getCropImgFile => _imgFile;
+  int? get getBrandId => _brandId;
+  bool get getIsLoading => _isLoading;
 
   Future<void> fetchPosts() async {
     if (_isLoadingMore) return;
@@ -66,7 +86,9 @@ class AdsProvider extends ChangeNotifier {
     try {
       _isLoadingMore = true;
       print('Fetching brand...');
-      List<Brand> brand = await _controller.fetchBrands( _subCategory!.id);
+
+      List<Brand> brand = await _controller.fetchBrands(_subCategory!.id);
+
       _brand.addAll(brand);
       print('Fetched brand: $_posts');
     } catch (e) {
@@ -82,7 +104,9 @@ class AdsProvider extends ChangeNotifier {
     try {
       _isLoadingMore = true;
       print('Fetching model...');
-      List<Model> model = await _modelController.fetchModel(_subCategory!.id);
+      List<Model> model = await _modelController.fetchModel(_brandId!);
+      _model.clear();
+
       _model.addAll(model);
       print('Fetched model: $_posts');
     } catch (e) {
@@ -127,13 +151,100 @@ class AdsProvider extends ChangeNotifier {
 
   void setIsLocation([bool isLocation = false]) {
     _isLocation = isLocation;
-    print(">>>>>>>>>>SSSSSSSSS : " + _isLocation.toString());
     notifyListeners();
   }
 
-  Future<void> addAd(BasePostModel data) async {
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OOOOOO : " +
-        data.toString());
-    print(data.toJson().toString());
+  void setSelectedBrandId(int brandId) {
+    _brandId = brandId;
+    notifyListeners();
+  }
+
+  Future<void> addAd(BuildContext context, BasePostModel data) async {
+    setLoading(true);
+    await _adsController.postAd(data).then((response) {
+       setLoading(false);
+      // if (response.error ?? false) {
+      DialogBox().dialogBox(context, DialogType.success, 'Success',
+          response.toString() ?? "",false, () {}, () {});
+      // }
+    });
+    clearFormData();
+  }
+ void clearFormData() {
+    _file = [];
+    _imgFile = null;
+    // _category = null;
+    // _subCategory = null;
+    // _distric = null;
+    // _city = null;
+    // _brandId = null;
+    // _isLocation = false;
+    notifyListeners();
+  }
+  // Future<void> selectImage(ImageSource source) async {
+  //   try {
+  //     final XFile? pickFile = await _picker.pickImage(
+  //         source: ImageSource.gallery, imageQuality: 50);
+  //     if (pickFile != null) {
+  //       CroppedFile? croppedFile = await ImageCropper().cropImage(
+  //         sourcePath: pickFile.path,
+  //         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+  //       );
+  //       if (croppedFile == null) {
+  //         return;
+  //       }
+  //       File compressedFile = await compressImage(croppedFile.path, 35);
+
+  //       _file ??= []; // Initialize the list if it's null
+  //       _file!.add(compressedFile);
+  //       Logger().d(">>>>> : " + _file!.length.toString());
+  //       notifyListeners();
+  //     } else {
+  //       Logger().e("no image selected");
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e);
+  //   }
+  // }
+  Future<void> selectImage(ImageSource source) async {
+    try {
+      final XFile? pickFile =
+          await _picker.pickImage(source: source, imageQuality: 50);
+      if (pickFile != null) {
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickFile.path,
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        );
+        if (croppedFile == null) {
+          return;
+        }
+        File compressedFile = await compressImage(croppedFile.path, 35);
+
+        _file ??= []; // Initialize the list if it's null
+        _file!.add(compressedFile);
+        _imgFile = compressedFile;
+        notifyListeners();
+      } else {
+        Logger().e("no image selected");
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  Future<File> compressImage(String path, int quality) async {
+    final newPath = p.join((await getTemporaryDirectory()).path,
+        '${DateTime.now()}.${p.extension(path)}');
+    final result = await FlutterImageCompress.compressAndGetFile(
+      path,
+      newPath,
+      quality: quality,
+    );
+    return File(result!.path);
+  }
+
+  void setLoading([bool val = false]) {
+    _isLoading = val;
+    notifyListeners();
   }
 }

@@ -3,7 +3,7 @@ import 'package:classic_ads/Model/SubCategory.dart';
 
 class Post {
   final int id;
-  final String adsId;
+  final int adsId;
   final String title;
   final String url;
   final int location;
@@ -19,8 +19,8 @@ class Post {
   final dynamic packageType;
   final dynamic packageExpireAt;
   final String bumpUpAt;
-  final String viewCountr;
-  final String clickCountr;
+  final int viewCountr;
+  final int clickCountr;
   final dynamic priceType;
   final dynamic postType;
   final int status;
@@ -65,7 +65,7 @@ class Post {
   factory Post.fromJson(Map<String, dynamic> json) {
    return Post(
       id: json['id'] != null ? int.parse(json['id'].toString()) : 0,
-      adsId: json['adsId'],
+      adsId: json['adsId'] != null ? int.parse(json['adsId'].toString()) : 0, 
       title: json['title'],
       url: json['url'],
       location: json['location'] != null ? int.parse(json['location'].toString()) : 0,
@@ -81,8 +81,8 @@ class Post {
       packageType: json['package_type'],
       packageExpireAt: json['package_expire_at'],
       bumpUpAt: json['bump_up_at'],
-      viewCountr: json['view_counr'],
-      clickCountr: json['click_counr'],
+      viewCountr: json['view_counr']!=null? int.parse(json['view_counr'].toString()) : 0,
+      clickCountr: json['click_counr']!=null? int.parse(json['click_counr'].toString()) : 0,
       priceType: json['price_type'],
       postType: json['post_type'],
       status: json['status'] != null ? int.parse(json['status'].toString()) : 0,
@@ -135,8 +135,8 @@ class SubLocation {
   final dynamic subNameSi;
   final dynamic subNameTa;
   final String postcode;
-  final String latitude;
-  final String longitude;
+  final double  latitude;
+  final double  longitude;
 
   SubLocation({
     required this.id,
@@ -163,10 +163,14 @@ class SubLocation {
       subNameSi: json['sub_name_si'],
       subNameTa: json['sub_name_ta'],
       postcode: json['postcode'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      latitude:json['latitude'] != null ? double.parse(json['latitude'].toString()) : 0, 
+      longitude:json['longitude'] != null ? double.parse(json['longitude'].toString()) : 0,
+
     );
   }
+
+
+
 }
 
 // class Category {

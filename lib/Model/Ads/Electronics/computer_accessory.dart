@@ -1,15 +1,14 @@
 import 'package:classic_ads/Model/Ads/base_model.dart';
 
-class MobilePhonePostModel extends BasePostModel {
+class ComputerAccessoryPostModel extends BasePostModel {
+  int? type;
   int? brand;
-  int? model;
-  Set<String>? specialization;
-  // String? subImages1;
-  // String? subImages2;
-  // String? subImages3;
-  // String? subImages4;
+  String? subImages1;
+  String? subImages2;
+  String? subImages3;
+  String? subImages4;
 
-  MobilePhonePostModel({
+  ComputerAccessoryPostModel({
     super.catId,
     super.subcatId,
     super.userId,
@@ -19,22 +18,20 @@ class MobilePhonePostModel extends BasePostModel {
     super.location,
     super.sublocation,
     required super.mainImage,
-    // required super.subImages,
-    super.subImages1,
-    super.subImages2,
-    super.subImages3,
-    super.subImages4,
+    this.subImages1,
+    this.subImages2,
+    this.subImages3,
+    this.subImages4,
     super.priceType,
     super.postType,
     super.condition,
     super.planId,
+    this.type,
     this.brand,
-    this.model,
-    this.specialization,
   });
 
-  factory MobilePhonePostModel.fromJson(Map<String, dynamic> json) {
-    return MobilePhonePostModel(
+  factory ComputerAccessoryPostModel.fromJson(Map<String, dynamic> json) {
+    return ComputerAccessoryPostModel(
       catId: json['catId'],
       subcatId: json['subcatId'],
       userId: json['userId'],
@@ -44,7 +41,6 @@ class MobilePhonePostModel extends BasePostModel {
       location: json['location'],
       sublocation: json['sublocation'],
       mainImage: json['mainImage'],
-      // subImages: json['subImages'],
       subImages1: json['subImages1'],
       subImages2: json['subImages2'],
       subImages3: json['subImages3'],
@@ -52,19 +48,17 @@ class MobilePhonePostModel extends BasePostModel {
       priceType: json['price_type'],
       postType: json['post_type'],
       condition: json['condition'],
-      planId: json['planId'],
+      planId: json['plan_id'],
+      type: json['type'],
       brand: json['brand'],
-      model: json['model'],
-      specialization: json['specialization'],
     );
   }
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = super.toJson();
+    data['type'] = type;
     data['brand'] = brand;
-    data['model'] = model;
-    data['specialization'] = specialization?.toList();
     data['subImages1'] = subImages1;
     data['subImages2'] = subImages2;
     data['subImages3'] = subImages3;

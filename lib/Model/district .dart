@@ -3,10 +3,10 @@ import 'package:classic_ads/Model/city.dart';
 class District {
   final int id;
   final String url;
-  final String provinceId;
+  final int provinceId;
   final String nameEn;
   final String nameSi;
-  final String nameTa;
+  final String? nameTa;
   final List<City> cities;
 
   District({
@@ -15,18 +15,19 @@ class District {
     required this.provinceId,
     required this.nameEn,
     required this.nameSi,
-    required this.nameTa,
+    this.nameTa,
     required this.cities,
   });
 
   factory District.fromJson(Map<String, dynamic> json) {
+    var districtData = json['district'];
     return District(
-      id: json['district']['id'],
-      url: json['district']['url'],
-      provinceId: json['district']['province_id'],
-      nameEn: json['district']['name_en'],
-      nameSi: json['district']['name_si'],
-      nameTa: json['district']['name_ta'],
+      id: districtData['id'],
+      url: districtData['url'],
+      provinceId: districtData['province_id'],
+      nameEn: districtData['name_en'],
+      nameSi: districtData['name_si'],
+      nameTa: districtData['name_ta'],
       cities: (json['cities'] as List)
           .map((cityJson) => City.fromJson(cityJson))
           .toList(),

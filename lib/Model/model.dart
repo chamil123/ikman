@@ -1,9 +1,9 @@
 class Model {
   final int id;
-  final String brandsId;
+  final int brandsId;
   final String name;
-  final String sub_cat_id;
-  final String status;
+  final int sub_cat_id;
+  final int status;
 
   Model(
       {required this.id,
@@ -14,10 +14,10 @@ class Model {
   factory Model.fromJson(Map<String, dynamic> json) {
     return Model(
       id: json['id'],
-      brandsId: json['brandsId'],
+      brandsId:json['brandsId'] != null ? int.parse(json['brandsId'].toString()) : 0,
       name: json['name'],
-      sub_cat_id: json['sub_cat_id'],
-      status: json['status'],
+      sub_cat_id: json['sub_cat_id'] != null ? int.parse(json['sub_cat_id'].toString()) : 0,
+      status: json['status'] != null ? int.parse(json['status'].toString()) : 0,
     );
   }
 }

@@ -23,7 +23,12 @@ abstract class BaseAdFormState extends State<BaseAdForm> {
     }
     return false;
   }
-
+ void resetForm() {
+    formKey.currentState?.reset();
+    setState(() {
+      formData.clear();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -75,6 +80,7 @@ abstract class BaseAdFormState extends State<BaseAdForm> {
                     }
                     return null;
                   },
+                  true
                 ),
                 ...widget.buildCategoryFields(formData, setState),
               ],
@@ -89,7 +95,7 @@ abstract class BaseAdFormState extends State<BaseAdForm> {
 Padding customTextField(
   String hintText,
   final Function(String?) onSaved,
-  String? Function(String?)? validator,
+  String? Function(String?)? validator,[bool isMinLine=false]
 ) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 8.0),
@@ -123,6 +129,9 @@ Padding customTextField(
           ),
           validator: validator,
           onSaved: onSaved,
+           maxLines: null, // Allow multiple lines
+          minLines:isMinLine? 2:1, // Set a minimum number of lines
+          keyboardType: TextInputType.multiline, // Enable multiline input
         ),
         SizedBox(height: 10),
       ],

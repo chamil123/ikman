@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 import '../../../Components/Custom_dropdown_decoration.dart';
 import '../../Widgets/base_form.dart';
 
-class MobilePhoneAdForm extends BaseAdForm {
-  MobilePhoneAdForm(
-      {Key? key, required void Function(Map<String, dynamic>) onSave})
+class TvsAdForm extends BaseAdForm {
+  TvsAdForm({Key? key, required void Function(Map<String, dynamic>) onSave})
       : super(key: key, onSave: onSave);
 
   @override
-  MobilePhoneAdFormState createState() => MobilePhoneAdFormState();
+  TvsAdFormState createState() => TvsAdFormState();
 
   @override
   List<Widget> buildCategoryFields(
@@ -26,20 +25,29 @@ class MobilePhoneAdForm extends BaseAdForm {
       buildConditionField(formData, setState),
       const SizedBox(height: 10),
       buildDropdownField(
-        'brand',
-        'Select Brand',
+        'Device Type',
+        'Select a type',
         formData,
         setState,
       ),
       const SizedBox(height: 20),
       buildDropdownModelField(
-        'model',
-        'Select a model',
+        'Brand Name',
+        'Select a Brand',
         formData,
         setState,
       ),
       const SizedBox(height: 15),
-      buildSpecializationField(formData, setState),
+      buildDropdownScreenSizeField(
+        'Screen Size',
+        'Select a Size',
+        formData,
+        setState,
+      ),
+      const SizedBox(height: 15),
+
+      // buildDropdownModelField(formData, setState),
+
       const SizedBox(height: 15),
       buildPriceTypeField(formData, setState),
       const SizedBox(height: 15),
@@ -193,46 +201,51 @@ class MobilePhoneAdForm extends BaseAdForm {
     );
   }
 
-  Widget buildSpecializationField(
+  Widget buildDropdownScreenSizeField(String key, String hint,
       Map<String, dynamic> formData, Function(void Function()) setState) {
-    List<String> features = [
-      '4G',
-      '5G',
-      'Dual SIM',
-      'Micro SIM',
-      'Mini SIM',
-      'USB Type-C',
-      'Fast Charging',
-      'Flash',
-      'Android',
-      'iOS',
-      'Expandable Storage',
-      'Bluetooth',
-      'WiFi',
-      'GPS',
-      'Fingerprint',
-      'Infrared'
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text("Specialization"),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 5,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 0,
-          ),
-          itemCount: features.length,
-          itemBuilder: (context, index) {
-            return buildCheckbox(features[index], formData, setState);
-          },
-        ),
-      ],
+    return Consumer<AdsProvider>(
+      builder: (context, adsProvider, child) {
+        List<DropdownMenuItem<int>> dropdownItems =
+            adsProvider.getModel.map((model) {
+          return DropdownMenuItem<int>(
+            value: model.id,
+            child: Text(model.name),
+          );
+        }).toList();
+        return Stack(
+          children: [
+            DropdownButtonFormField<int>(
+              decoration: dropDownDecoration(),
+              value: formData[key],
+              hint: Text(hint),
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select a $key';
+                }
+                return null;
+              },
+              onChanged: (int? newValue) {
+                setState(() {
+                  formData[key] = newValue!;
+                });
+              },
+              items: dropdownItems,
+            ),
+            if (adsProvider.isLoadingMore)
+              const Positioned.fill(
+                child: Center(
+                  child: SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -434,7 +447,6 @@ class MobilePhoneAdForm extends BaseAdForm {
       },
     );
   }
-
 }
 
-class MobilePhoneAdFormState extends BaseAdFormState {}
+class TvsAdFormState extends BaseAdFormState {}

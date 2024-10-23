@@ -213,7 +213,23 @@ class AdsProvider extends ChangeNotifier {
       if (pickFile != null) {
         CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: pickFile.path,
-          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+          aspectRatio: const CropAspectRatio(ratioX: 380, ratioY: 270), 
+          cropStyle: CropStyle.rectangle,
+          uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true,  // Unlock for free-form cropping
+          ),
+          IOSUiSettings(
+            title: 'Crop Image',
+            
+            resetAspectRatioEnabled: true,
+            aspectRatioLockEnabled: false,  // Disables aspect ratio lock
+          ),
+        ],
         );
         if (croppedFile == null) {
           return;

@@ -49,13 +49,28 @@ class _LocationScreenState extends State<LocationScreen> {
                   DialogType.noHeader,
                   'Exit form?',
                   'Are you sure want to exit from this form?\n if you do, all you entered data will be lost.',
-                  false, () {
-                Get.to(
+                  true,
+                  () {}, () {
+                Get.offAll(
                   () => const HomeScreen(),
                   transition: Transition.cupertino,
                   fullscreenDialog: true,
                 );
-              }, () {});
+              });
+              //   IconButton(
+              //     onPressed: () {
+              //       DialogBox().dialogBox(context, DialogType.noHeader, 'Exit form?',
+              //           'Are you sure want to exit from this form?\n if you do, all you entered data will be lost.',
+              //           () {
+              //         Get.offAll(
+              //           () => const HomeScreen(),
+              //           transition: Transition.cupertino,
+              //           fullscreenDialog: true,
+              //         );
+              //       }, () {});
+              //     },
+              //     icon: const Icon(Icons.close),
+              //   ),
             },
             icon: const Icon(Icons.close),
           ),

@@ -49,8 +49,17 @@ class UtilFuntions {
         (route) => false);
   }
 
-  Future<bool> isNetworkAvailable() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    return connectivityResult != ConnectivityResult.none;
+  static Future<bool> isNetworkAvailable() async {
+    try {
+      var connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        debugPrint('No internet connection');
+        return false;
+      }
+      return true;
+    } catch (e) {
+      debugPrint('Error checking connection: $e');
+      return false;
+    }
   }
 }

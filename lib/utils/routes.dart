@@ -7,6 +7,7 @@ import '../Screens/Post/view_post_details.dart';
 import '../Screens/Search/SubCategoryScreen.dart';
 import '../Screens/Search/filter_screen.dart';
 import '../Screens/Search/category_screen.dart';
+import '../Screens/no_connection_screen.dart';
 
 final routes = [
   // ... other routes ...
@@ -46,13 +47,16 @@ final routes = [
     transition: Transition.cupertino,
     fullscreenDialog: true,
   ),
-    GetPage(
+  GetPage(
     name: '/ad-screen',
     page: () => CreateAdScreen(),
     transition: Transition.cupertino,
     fullscreenDialog: true,
   ),
-  
-  
-   
+  GetPage(
+    name: '/no-connection-screen',
+    page: () => ConnectionScreen(),
+    transition: Transition.cupertino,
+    fullscreenDialog: true,
+  ),
 ];

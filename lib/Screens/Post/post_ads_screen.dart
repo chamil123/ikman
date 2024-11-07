@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/util_functions.dart';
+
 class PostAdsScreen extends StatefulWidget {
   @override
   State<PostAdsScreen> createState() => _PostAdsScreenState();
@@ -87,16 +89,30 @@ class _PostAdsScreenState extends State<PostAdsScreen> {
                         // borderRadius: BorderRadius.circular(10),s
                       ),
                       child: InkWell(
-                        onTap: () {
-                           Provider.of<AdsProvider>(context, listen: false)
-                              .setIsLocation(true);
-                          Provider.of<CategoryProvider>(context, listen: false)
-                              .fetchCategories();
-                          Get.toNamed(
-                            '/category-screen',
-                            preventDuplicates: false,
-                            parameters: {'transition': 'cupertino'},
-                          );
+                        onTap: () async {
+                          if (await UtilFuntions.isNetworkAvailable()) {
+                            Provider.of<AdsProvider>(context, listen: false)
+                                .setIsLocation(true);
+                            // ignore: use_build_context_synchronously
+                            Provider.of<CategoryProvider>(context,
+                                    listen: false)
+                                .fetchCategories();
+                            Get.toNamed(
+                              '/category-screen',
+                              preventDuplicates: false,
+                              parameters: {'transition': 'cupertino'},
+                            );
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Ad created successfully'),
+                                backgroundColor: Colors.red,
+                                // behavior: SnackBarBehavior.floating,
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
+                          }
                         },
                         child: Align(
                           alignment: Alignment.topLeft,

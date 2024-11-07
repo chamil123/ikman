@@ -17,6 +17,7 @@ import '../../../Model/Ads/Electronics/video_games_and_consoles.dart';
 import '../../../Model/Ads/base_model.dart';
 import '../../../Model/Ads/mobile_phone.dart';
 import '../../../Providers/ads_provider.dart';
+import '../../../utils/util_functions.dart';
 import '../../Components/custom_loader.dart';
 import '../Widgets/base_form.dart';
 import 'Electronics/airconditions_and_electrical_fittings.dart';
@@ -185,7 +186,11 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         if (adsProvider.getCropImg == null || adsProvider.getCropImg!.isEmpty) {
           return;
         } else {
-          await adsProvider.addAd(context, data);
+          if (await UtilFuntions.isNetworkAvailable()) {
+            await adsProvider.addAd(context, data);
+          }else{
+            print("no netwokj wavailable");
+          }
         }
 
         // ScaffoldMessenger.of(context).showSnackBar(

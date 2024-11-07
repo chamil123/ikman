@@ -162,15 +162,26 @@ class AdsProvider extends ChangeNotifier {
   Future<void> addAd(BuildContext context, BasePostModel data) async {
     setLoading(true);
     await _adsController.postAd(data).then((response) {
-       setLoading(false);
-      // if (response.error ?? false) {
-      DialogBox().dialogBox(context, DialogType.success, 'Success',
-          response.toString() ?? "",false, () {}, () {});
-      // }
+      setLoading(false);
+      print(response.toString());
+
+      if (response != null && response is Map<String, dynamic>) {
+        // _success = response['status'] ?? false;
+
+        if (response['status'] ?? false) {
+          // if(response)
+          DialogBox().dialogBox(context, DialogType.success, 'Success',
+              response['message'].toString()?? "", false, () {}, () {});
+        } else {
+          DialogBox().dialogBox(context, DialogType.error, 'Error',
+              response['message'].toString() ?? "", false, () {}, () {});
+        }
+      }
     });
     clearFormData();
   }
- void clearFormData() {
+
+  void clearFormData() {
     _file = [];
     _imgFile = null;
     // _category = null;
@@ -213,23 +224,23 @@ class AdsProvider extends ChangeNotifier {
       if (pickFile != null) {
         CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: pickFile.path,
-          aspectRatio: const CropAspectRatio(ratioX: 380, ratioY: 270), 
+          aspectRatio: const CropAspectRatio(ratioX: 380, ratioY: 270),
           cropStyle: CropStyle.rectangle,
           uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Crop Image',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: true,  // Unlock for free-form cropping
-          ),
-          IOSUiSettings(
-            title: 'Crop Image',
-            
-            resetAspectRatioEnabled: true,
-            aspectRatioLockEnabled: false,  // Disables aspect ratio lock
-          ),
-        ],
+            AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: true, // Unlock for free-form cropping
+            ),
+            IOSUiSettings(
+              title: 'Crop Image',
+
+              resetAspectRatioEnabled: true,
+              aspectRatioLockEnabled: false, // Disables aspect ratio lock
+            ),
+          ],
         );
         if (croppedFile == null) {
           return;

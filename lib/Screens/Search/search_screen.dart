@@ -25,6 +25,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // TODO: implement initState
 
     super.initState();
+    
     Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
   }
 
@@ -121,6 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 imageUrl: baseUrl +
                                     "public/images/Category/" +
                                     category.image,
+                                    width: 50,
                                 placeholder: (context, url) =>
                                     const SkeletonAvatar(
                                   style: SkeletonAvatarStyle(

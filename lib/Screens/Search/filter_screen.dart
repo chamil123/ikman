@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../../Providers/ads_provider.dart';
+import '../../utils/util_functions.dart';
 
 class FilterScreen extends StatefulWidget {
   @override
@@ -97,17 +98,23 @@ class _FilterScreenState extends State<FilterScreen> {
                   height: 2,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Provider.of<CategoryProvider>(context, listen: false)
-                        .fetchCategories();
-                    Provider.of<AdsProvider>(context, listen: false)
-                        .setIsLocation();
+                  onTap: () async {
+                    if (await UtilFuntions.isNetworkAvailable()) {
+                      Provider.of<CategoryProvider>(context, listen: false)
+                          .fetchCategories();
+                      Provider.of<AdsProvider>(context, listen: false)
+                          .setIsLocation();
 
-                    Get.toNamed(
-                      '/category-screen',
-                      preventDuplicates: false,
-                      parameters: {'transition': 'cupertino'},
-                    );
+                      Get.toNamed(
+                        '/category-screen',
+                        preventDuplicates: false,
+                        parameters: {'transition': 'cupertino'},
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Ad created successfully')),
+                      );
+                    }
                   },
                   child: Container(
                     height: 50,

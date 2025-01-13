@@ -127,6 +127,7 @@ class _LocationListState extends State<LocationList> {
                         title: Text(city.nameEn),
                         // subtitle: Text(city.postcode),
                         onTap: () {
+                          print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                           adsProvider.fetchBrands();
                           adsProvider.selectedDistrict(district, city);
                           if (adsProvider.isLocation) {

@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:classic_ads/Model/MainCategory.dart';
+import 'package:classic_ads/Model/SubCategory.dart';
 import 'package:classic_ads/Screens/Post/Form/Electronics/computer_accessories.dart';
+import 'package:classic_ads/Screens/Post/Form/MotorVehicles/cars.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/Ads/Electronics/airconditions_and_electrical_fittings.dart';
@@ -44,8 +47,23 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MainCategory mainCategory = context.read<AdsProvider>().getSelectedCaegory!;
+    SubCategory subCategory = context.read<AdsProvider>().getSubCategory!;
     return Scaffold(
-      appBar: AppBar(title: Text('Create Ad')),
+      appBar: AppBar(
+          title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            mainCategory!.name ?? '',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            subCategory!.name ?? '',
+            style: TextStyle(fontSize: 14),
+          ),
+        ],
+      )),
       body: Consumer<AdsProvider>(
         builder: (context, adsProvider, child) {
           return Stack(
@@ -180,6 +198,10 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           // case 'Electronics':
           //   data = ElectronicsPostModel.fromJson(formData);
           //   break;
+          /////Vehcile
+          case 'Cars':
+            data = OtherElectronicPostModel.fromJson(formData);
+            break;
           default:
             throw Exception('Unsupported category');
         }
@@ -188,7 +210,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         } else {
           if (await UtilFuntions.isNetworkAvailable()) {
             await adsProvider.addAd(context, data);
-          }else{
+          } else {
             print("no netwokj wavailable");
           }
         }
@@ -206,6 +228,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     }
 
     switch (selectedCategory) {
+      //Electronics
       case 'Mobile Phones':
         return MobilePhoneAdForm(key: _formKey, onSave: onSave);
       case 'Mobile Phone Accessories':
@@ -231,10 +254,14 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         return VideoGamesAndConsolesAdForm(key: _formKey, onSave: onSave);
       case 'Other Electronics':
         return OtherElectronicsAdForm(key: _formKey, onSave: onSave);
-      case 'Vehicles':
-        return VehicleAdForm(key: _formKey, onSave: onSave);
       case 'Electronics':
         return ElectronicAdForm(key: _formKey, onSave: onSave);
+
+      //Vehicles
+      case 'Cars':
+        return CarsAdForm(key: _formKey, onSave: onSave);
+      // case 'Vehicles':
+      //   return VehicleAdForm(key: _formKey, onSave: onSave);
       default:
         return Container();
     }

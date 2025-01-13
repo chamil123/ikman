@@ -82,13 +82,16 @@ class AdsProvider extends ChangeNotifier {
   }
 
   Future<void> fetchBrands() async {
+    print("####################>>>>>>>>>>>>>>>>>>>>>>>>> ");
     if (_isLoadingMore) return;
     try {
       _isLoadingMore = true;
       print('Fetching brand...');
 
+      print("#################### " + _subCategory!.id.toString());
       List<Brand> brand = await _controller.fetchBrands(_subCategory!.id);
 
+      _brand.clear();
       _brand.addAll(brand);
       print('Fetched brand: $_posts');
     } catch (e) {
@@ -103,6 +106,7 @@ class AdsProvider extends ChangeNotifier {
     if (_isLoadingMore) return;
     try {
       _isLoadingMore = true;
+      print("`````````````````````` " + _brandId!.toString());
       print('Fetching model...');
       List<Model> model = await _modelController.fetchModel(_brandId!);
       _model.clear();
@@ -144,6 +148,7 @@ class AdsProvider extends ChangeNotifier {
   }
 
   void selectedDistrict(District distric, City city) {
+      print("`*************************** " +_subCategory!.name);
     _distric = distric;
     _city = city;
     notifyListeners();
@@ -155,6 +160,7 @@ class AdsProvider extends ChangeNotifier {
   }
 
   void setSelectedBrandId(int brandId) {
+    print("`*************************** " +_subCategory!.name);
     _brandId = brandId;
     notifyListeners();
   }
@@ -171,7 +177,7 @@ class AdsProvider extends ChangeNotifier {
         if (response['status'] ?? false) {
           // if(response)
           DialogBox().dialogBox(context, DialogType.success, 'Success',
-              response['message'].toString()?? "", false, () {}, () {});
+              response['message'].toString() ?? "", false, () {}, () {});
         } else {
           DialogBox().dialogBox(context, DialogType.error, 'Error',
               response['message'].toString() ?? "", false, () {}, () {});

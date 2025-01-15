@@ -25,29 +25,89 @@ class CarsAdForm extends BaseAdForm {
       buildConditionField(formData, setState),
       const SizedBox(height: 10),
       buildDropdownField(
-        'Device Type',
-        'Select a type',
-        formData,
-        setState,
-      ),
-      const SizedBox(height: 20),
-      buildDropdownModelField(
-        'Brand Name',
+        'brand',
         'Select a Brand',
         formData,
         setState,
       ),
+      // const SizedBox(height: 20),
+      // buildDropdownModelField(
+      //   'Brand Name',
+      //   'Select a Brand',
+      //   formData,
+      //   setState,
+      // ),
       const SizedBox(height: 15),
       buildDropdownScreenSizeField(
-        'Screen Size',
-        'Select a Size',
+        'model',
+        'Select a Model',
         formData,
         setState,
       ),
       const SizedBox(height: 15),
 
       // buildDropdownModelField(formData, setState),
-
+      customTextField(
+        "Trim/Edition",
+        (value) => formData['Trim'] = value,
+        (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter trim/Edition(Optional)';
+          }
+          return null;
+        },
+      ),
+      customTextField(
+        "Year of Manufacture",
+        (value) => formData['Year'] = value,
+        (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter year of manufacture)';
+          }
+          return null;
+        },
+      ),
+      customTextField(
+        "Mileage (km)",
+        (value) => formData['Mileage'] = value,
+        (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter Mileage (km)';
+          }
+          return null;
+        },
+      ),
+      customTextField(
+        "Engine capacity(cc)",
+        (value) => formData['engine_capacity'] = value,
+        (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter Engine capacity(cc)';
+          }
+          return null;
+        },
+      ),
+      const SizedBox(height: 15),
+      buildDropdownScreenSizeField(
+        'fuel_Type',
+        'Select a Fuel Type',
+        formData,
+        setState,
+      ),
+      const SizedBox(height: 15),
+      buildDropdownScreenSizeField(
+        'transmission',
+        'Select a Transmission',
+        formData,
+        setState,
+      ),
+      const SizedBox(height: 15),
+      buildDropdownScreenSizeField(
+        'type', 
+        'Select a Body type',
+        formData,
+        setState,
+      ),
       const SizedBox(height: 15),
       buildPriceTypeField(formData, setState),
       const SizedBox(height: 15),
@@ -65,31 +125,55 @@ class CarsAdForm extends BaseAdForm {
       children: [
         const Text("Condition"),
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Expanded(
-              child: RadioListTile<String>(
-                title: const Text("New"),
-                value: "New",
-                groupValue: formData['condition'],
-                onChanged: (value) {
-                  setState(() {
-                    formData['condition'] = value;
-                  });
-                },
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Radio<String>(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  value: "New",
+                  groupValue: formData['condition'],
+                  onChanged: (value) {
+                    setState(() {
+                      formData['condition'] = value;
+                    });
+                  },
+                ),
+                const Text("New"),
+              ],
             ),
-            Expanded(
-              child: RadioListTile<String>(
-                title: const Text("Used"),
-                value: "Used",
-                groupValue: formData['condition'],
-                onChanged: (value) {
-                  setState(() {
-                    formData['condition'] = value;
-                  });
-                },
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Radio<String>(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  value: "Used",
+                  groupValue: formData['condition'],
+                  onChanged: (value) {
+                    setState(() {
+                      formData['condition'] = value;
+                    });
+                  },
+                ),
+                const Text("Used"),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Radio<String>(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  value: "Reconditioned",
+                  groupValue: formData['condition'],
+                  onChanged: (value) {
+                    setState(() {
+                      formData['condition'] = value;
+                    });
+                  },
+                ),
+                const Text("Reconditioned"),
+              ],
             ),
           ],
         ),

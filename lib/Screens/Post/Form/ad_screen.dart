@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:classic_ads/Model/Ads/Vehicle/car_post_model.dart';
 import 'package:classic_ads/Model/MainCategory.dart';
 import 'package:classic_ads/Model/SubCategory.dart';
 import 'package:classic_ads/Screens/Post/Form/Electronics/computer_accessories.dart';
@@ -200,7 +201,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           //   break;
           /////Vehcile
           case 'Cars':
-            data = OtherElectronicPostModel.fromJson(formData);
+            data = CarPostModel.fromJson(formData);
             break;
           default:
             throw Exception('Unsupported category');
@@ -209,6 +210,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           return;
         } else {
           if (await UtilFuntions.isNetworkAvailable()) {
+            
             await adsProvider.addAd(context, data);
           } else {
             print("no netwokj wavailable");

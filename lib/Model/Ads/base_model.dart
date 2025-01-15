@@ -18,6 +18,9 @@ class BasePostModel {
   int? planId;
   String condition;
 
+  /////////
+  ///
+
   BasePostModel({
     this.catId,
     this.subcatId,

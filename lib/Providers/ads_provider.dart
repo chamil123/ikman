@@ -167,15 +167,18 @@ class AdsProvider extends ChangeNotifier {
 
   Future<void> addAd(BuildContext context, BasePostModel data) async {
     setLoading(true);
+      print("`*************************** ");
+      print(data);
+       print("`*************************** " );
     await _adsController.postAd(data).then((response) {
+     
       setLoading(false);
       print(response.toString());
 
       if (response != null && response is Map<String, dynamic>) {
-        // _success = response['status'] ?? false;
 
         if (response['status'] ?? false) {
-          // if(response)
+
           DialogBox().dialogBox(context, DialogType.success, 'Success',
               response['message'].toString() ?? "", false, () {}, () {});
         } else {
